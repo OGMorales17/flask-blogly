@@ -1,0 +1,21 @@
+{% extends 'base.html' %} {% block title %}Posts{% endblock %} {% block content %} {% for post in posts %}
+<div class="row">
+    <h1>Recent Posts</h1>
+    <div class="col-sm-10 col-12">
+        <h3>{{ post.title }}</h3>
+
+        <p>{{ post.content }}</p>
+        <p><em>By {{ post.user.full_name }}, {{ post.date_formatted }}</em></p>
+
+    </div>
+</div>
+{% endfor %} {% endblock %}
+
+
+
+<!-- <ul>
+    <li>
+        <a href="/posts/{{ post.post_id }}">{{ post.title }}</a>
+    </li>
+    <p>{{ post.content }}</p>
+</ul> -->
