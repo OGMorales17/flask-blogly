@@ -24,6 +24,13 @@ def root():
     return render_template('base.html')
 
 
+@app.errorhandler(404)
+def page_not_found(e):
+    """Show the 404 not found page"""
+
+    return render_template('404.html'), 404
+
+
 @app.route('/users')
 def users_index():
     """Show a page with info on all users"""
@@ -39,6 +46,7 @@ def users_new_form():
     return render_template('users/new.html')
 
 
+# In the next function I get an error if I try to duplicate a name, So far have not been able to find out how to handle the error
 @app.route("/users/new", methods=["POST"])
 def users_new():
     """Handle form submission for creating a new user"""
@@ -50,6 +58,7 @@ def users_new():
 
     db.session.add(new_user)
     db.session.commit()
+    flash(f"User: {new_user.full_name} added.")
 
     return redirect("/users")
 
@@ -82,6 +91,7 @@ def users_update(user_id):
     db.session.add(user)
     db.session.commit()
 
+    flash(f"User: {user.full_name} edited.")
     return redirect("/users")
 
 
@@ -93,6 +103,7 @@ def users_destroy(user_id):
     db.session.delete(user)
     db.session.commit()
 
+    flash(f"User: {user.full_name} deleted.")
     return redirect("/users")
 
 
@@ -173,4 +184,4 @@ def posts_destroy(post_id):
 
     flash(f"Post '{post.title}' deleted.")
 
-    return redirect(f"/users")
+    return redirect(f"/users/{post.id}")

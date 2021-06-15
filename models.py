@@ -22,7 +22,6 @@ class User(db.Model):
                            nullable=False,
                            unique=True)
 
-    # If no familly member allowed change last_name unique=True
     last_name = db.Column(db.String(10),
                           nullable=False,
                           unique=False)
