@@ -1,3 +1,4 @@
+from sqlalchemy.exc import IntegrityError
 from flask import Flask, request, render_template, redirect, flash, session
 from flask_debugtoolbar import DebugToolbarExtension
 from flask_sqlalchemy import SQLAlchemy
@@ -45,22 +46,24 @@ def users_new_form():
 
     return render_template('users/new.html')
 
-
-# In the next function I get an error if I try to duplicate a name, So far have not been able to find out how to handle the error
+# skipping to the /users/new POST route in question:
 @app.route("/users/new", methods=["POST"])
 def users_new():
     """Handle form submission for creating a new user"""
+    try:
+        new_user = User(
+            first_name=request.form['first_name'],
+            last_name=request.form['last_name'],
+            image_url=request.form['image_url'] or None)
 
-    new_user = User(
-        first_name=request.form['first_name'],
-        last_name=request.form['last_name'],
-        image_url=request.form['image_url'] or None)
-
-    db.session.add(new_user)
-    db.session.commit()
-    flash(f"User: {new_user.full_name} added.")
-
-    return redirect("/users")
+        db.session.add(new_user)
+        db.session.commit()
+        flash(f"User: {new_user.full_name} added.")
+        return redirect("/users")
+    except IntegrityError as err:
+        flash(
+            f"Credentials already taken, please choose different values: {err.orig.diag.message_detail}")
+        return render_template('users/new.html')
 
 
 @app.route('/users/<int:user_id>')
