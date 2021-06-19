@@ -2,20 +2,18 @@
 <div class="row">
     <h1>Recent Posts</h1>
     <div class="col-sm-10 col-12">
-        <h3>{{ post.title }}</h3>
+        <h3><a href="/posts/{{ post.id }}">{{ post.title }}</a></h3>
 
         <p>{{ post.content }}</p>
         <p><em>By {{ post.user.full_name }}, {{ post.date_formatted }}</em></p>
 
+        {% if post.tags %}
+        <p>
+            <b>Tags:</b> {% for tag in post.tags %}
+            <a href="/tags/{{ tag.id }}"><i class="badge badge-primary">{{ tag.name }}</i></a> {% endfor %}
+        </p>
+        {% endif %}
+
     </div>
 </div>
 {% endfor %} {% endblock %}
-
-
-
-<!-- <ul>
-    <li>
-        <a href="/posts/{{ post.post_id }}">{{ post.title }}</a>
-    </li>
-    <p>{{ post.content }}</p>
-</ul> -->

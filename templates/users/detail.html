@@ -22,7 +22,7 @@
         <ul>
             {% for post in user.posts %}
             <li>
-                <a href="/posts/{{ post.post_id }}">{{ post.title }}</a>
+                <a href="/posts/{{ post.id }}">{{ post.title }}</a>
                 <small>{{ post.date_formatted }}</small>
             </li>
 
